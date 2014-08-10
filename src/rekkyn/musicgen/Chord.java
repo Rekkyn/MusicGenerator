@@ -5,7 +5,7 @@ import rekkyn.musicgen.Reference.Root;
 
 public class Chord {
     
-    Root root;
+    public Root root;
     public boolean major = true;
     public Length length = Length.WHOLE;
     
