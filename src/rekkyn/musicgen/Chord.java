@@ -6,8 +6,11 @@ import rekkyn.musicgen.Reference.Root;
 public class Chord {
     
     public Root root;
-    public boolean major = true;
     public int length = Length.WHOLE;
+    
+    public int third = 4;
+    public int fifth = 7;
+    public int seventh = 11;
     
     public Chord(Root root) {
         this.root = root;
@@ -16,7 +19,19 @@ public class Chord {
     public Chord() {}
     
     public Chord minor() {
-        major = false;
+        third = 3;
+        seventh = 10;
+        return this;
+    }
+    
+    public Chord flat7() {
+        seventh = 10;
+        return this;
+    }
+    
+    public Chord dim() {
+        third = 3;
+        fifth = 6;
         return this;
     }
     

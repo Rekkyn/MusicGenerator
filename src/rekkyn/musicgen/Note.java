@@ -10,6 +10,7 @@ public class Note {
     public static final Note C3 = new Note(36);
     public static final Note C4 = new Note(48);
     public static final Note C5 = new Note(60);
+    public static final Note C6 = new Note(72);
     
     public int num;
     
@@ -24,6 +25,14 @@ public class Note {
     public Note closestTo(Note note) {
         int newNum = note.num + relDistanceBetweenNotes(note, this);
         return new Note(newNum);
+    }
+    
+    public static int distanceBetweenNotes(Note a, Note b) {
+        int n = Math.abs(a.num % 12 - b.num % 12);
+        if (n > 6)
+            return 12 - n;
+        else
+            return n;
     }
     
     public static int relDistanceBetweenNotes(Note a, Note b) {
@@ -60,6 +69,11 @@ public class Note {
     public boolean equals(Object obj) {
         if (obj instanceof Note && num == ((Note) obj).num) return true;
         return false;
+    }
+    
+    @Override
+    public String toString() {
+        return "(" + num + ")";
     }
     
 }
