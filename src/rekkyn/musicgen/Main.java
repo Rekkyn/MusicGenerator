@@ -3,9 +3,10 @@ package rekkyn.musicgen;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import rekkyn.musicgen.Chord.ResetChord;
 import rekkyn.musicgen.MidiFile.Track;
 import rekkyn.musicgen.Reference.Root;
-import rekkyn.musicgen.patterns.SixteenthBass;
+import rekkyn.musicgen.patterns.PopcornBass;
 
 public class Main {
     
@@ -18,6 +19,7 @@ public class Main {
                 add(new Chord(Root.G));
                 add(new Chord(Root.A).minor());
                 add(new Chord(Root.F));
+                add(new ResetChord());
                 add(new Chord(Root.C));
                 add(new Chord(Root.G));
                 add(new Chord(Root.E).minor());
@@ -25,7 +27,7 @@ public class Main {
             }
         });
         
-        song.add(new SixteenthBass(), mf, Track.BASS);
+        song.add(new PopcornBass(), mf, Track.BASS);
         
         mf.writeToFile("test.mid");
     }

@@ -11,14 +11,12 @@ public class Reference {
         }
     }
     
-    public enum Length {
-        SIXTEENTH(4), EIGHTH(8), QUARTER(16), HALF(32), WHOLE(64);
-        
-        public final int lengthInt;
-        
-        Length(int length) {
-            lengthInt = length;
-        }
+    public static final class Length {
+        public static final int SIXTEENTH = 4;
+        public static final int EIGHTH = 8;
+        public static final int QUARTER = 16;
+        public static final int HALF = 32;
+        public static final int WHOLE = 64;
     }
     
 }

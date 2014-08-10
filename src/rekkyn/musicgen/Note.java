@@ -52,8 +52,8 @@ public class Note {
         return this;
     }
     
-    public Note octave() {
-        return new Note(num + 12);
+    public Note plus(int i) {
+        return new Note(num + i);
     }
     
     @Override

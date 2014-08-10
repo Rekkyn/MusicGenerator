@@ -5,7 +5,7 @@ import rekkyn.musicgen.Chord.ResetChord;
 import rekkyn.musicgen.MidiFile.Track;
 import rekkyn.musicgen.Reference.Length;
 
-public class SixteenthBass extends Playable {
+public class PopcornBass extends Playable {
     
     Note prevNote = Note.C0;
     
@@ -17,18 +17,22 @@ public class SixteenthBass extends Playable {
                 prevNote = Note.C0;
                 continue;
             }
-            Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? Note.C3 : prevNote).clamp(Note.C2, Note.C4);
+            Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? Note.C4 : prevNote).clamp(Note.C3, Note.C4);
             
             int chordLength = chord.length;
-            while (chordLength > 0) {
-                playChord(new Note[] { note, note.plus(12) }, Length.SIXTEENTH);
-                playChord(new Note[] { note, note.plus(12) }, Length.SIXTEENTH);
-                playChord(new Note[] { note, note.plus(12) }, Length.EIGHTH);
+            while (chordLength - Length.QUARTER > 0) {
+                playNote(note, Length.EIGHTH);
+                playNote(note.plus(12), Length.SIXTEENTH);
+                playNote(note.plus(7), Length.SIXTEENTH);
                 
                 chordLength -= Length.QUARTER;
             }
-            prevNote = note;
+            playNote(note, Length.SIXTEENTH);
+            playNote(note.plus(chord.major ? 4 : 3), Length.SIXTEENTH);
+            playNote(note.plus(7), Length.SIXTEENTH);
+            playNote(note.plus(12), Length.SIXTEENTH);
             
+            prevNote = note;
         }
     }
     

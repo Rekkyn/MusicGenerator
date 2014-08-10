@@ -7,19 +7,25 @@ public class Chord {
     
     public Root root;
     public boolean major = true;
-    public Length length = Length.WHOLE;
+    public int length = Length.WHOLE;
     
     public Chord(Root root) {
         this.root = root;
     }
+    
+    public Chord() {}
     
     public Chord minor() {
         major = false;
         return this;
     }
     
-    public Chord length(Length length) {
+    public Chord length(int length) {
         this.length = length;
         return this;
+    }
+    
+    public static class ResetChord extends Chord {
+        public ResetChord() {}
     }
 }
