@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import rekkyn.musicgen.MidiFile.Track;
 import rekkyn.musicgen.Reference.Length;
 import rekkyn.musicgen.Reference.Root;
+import rekkyn.musicgen.patterns.BluegrassBass;
 import rekkyn.musicgen.patterns.ClosestChord;
-import rekkyn.musicgen.patterns.PopcornBass;
 
 public class Main {
     
@@ -16,20 +16,27 @@ public class Main {
         
         Song song = new Song().setProgression(new ArrayList<Chord>() {
             {
-                add(new Chord(Root.C).minor());
-                add(new Chord(Root.Ab));
-                add(new Chord(Root.Eb));
-                add(new Chord(Root.Bb));
-                add(new Chord(Root.C).minor());
-                add(new Chord(Root.Ab));
-                add(new Chord(Root.Eb));
-                add(new Chord(Root.Bb).length(Length.HALF));
-                add(new Chord(Root.B).dim().length(Length.HALF));
+                add(new Chord(Root.C).length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.B).dim().length(Length.QUARTER));
+                add(new Chord(Root.A).minor().length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.G).length(Length.QUARTER));
+                add(new Chord(Root.F).length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.Fs).length(Length.QUARTER));
+                add(new Chord(Root.G).length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.B).dim().length(Length.QUARTER));
+                add(new Chord(Root.C).length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.B).dim().length(Length.QUARTER));
+                add(new Chord(Root.A).minor().length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.G).length(Length.QUARTER));
+                add(new Chord(Root.F).length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.Fs).length(Length.QUARTER));
+                add(new Chord(Root.G).length(Length.HALF + Length.QUARTER));
+                add(new Chord(Root.B).dim().length(Length.QUARTER));
             }
         });
         
-        song.add(new ClosestChord(Length.HALF), mf, Track.CHORDS);
-        song.add(new PopcornBass(), mf, Track.BASS);
+        song.add(new ClosestChord(Length.WHOLE), mf, Track.CHORDS);
+        song.add(new BluegrassBass(), mf, Track.BASS);
         
         mf.writeToFile("test.mid");
     }
