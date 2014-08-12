@@ -75,4 +75,20 @@ public class Song {
         return 0;
     }
     
+    public int getIntervalBetweenNotes(Note a, Note b) {
+        if (b.num > a.num) {
+            int pos = 1;
+            while (true) {
+                if (getNextNoteFromScale(a, pos).equals(b)) return pos;
+                pos++;
+            }
+        } else {
+            int pos = -1;
+            while (true) {
+                if (getNextNoteFromScale(a, pos).equals(b)) return pos;
+                pos--;
+            }
+        }
+    }
+    
 }
