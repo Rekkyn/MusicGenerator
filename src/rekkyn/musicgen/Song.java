@@ -1,23 +1,30 @@
 package rekkyn.musicgen;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import rekkyn.musicgen.MidiFile.Track;
 import rekkyn.musicgen.Reference.Root;
 import rekkyn.musicgen.Scale.Positions;
 
 public class Song {
-    public ArrayList<Chord> progression;
+    public List<Chord> progression = new ArrayList<Chord>();
     public Root key;
     public int[] scale;
     
     public Song setProgression(Object[] progression) {
-        for (Object element : progression) {
-            if (element instanceof Positions) {
-                int rootNum = key.num + scale[((Positions) element).position];
-                
+        for (int i = 0; i < progression.length; i++) {
+            if (progression[i] instanceof Positions) {
+                int rootNum = (key.num + scale[((Positions) progression[i]).position]) % 12;
+                Chord chord = new Chord(Root.getRootFromNum(rootNum));
+                Note root = new Note(rootNum);
+                chord.third = getNextNoteFromScale(root, 2).num - rootNum;
+                chord.fifth = getNextNoteFromScale(root, 4).num - rootNum;
+                chord.seventh = getNextNoteFromScale(root, 6).num - rootNum;
+                progression[i] = chord;
             }
         }
+        Chord[] chordArray = Arrays.copyOf(progression, progression.length, Chord[].class);
+        this.progression = Arrays.asList(chordArray);
         return this;
     }
     

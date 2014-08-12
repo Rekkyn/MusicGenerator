@@ -10,7 +10,7 @@ public class Reference {
             this.num = num;
         }
         
-        public Root getRootFromNum(int num) {
+        public static Root getRootFromNum(int num) {
             while (num >= 12)
                 num -= 12;
             switch(num) {

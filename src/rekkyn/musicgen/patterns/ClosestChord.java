@@ -3,6 +3,7 @@ package rekkyn.musicgen.patterns;
 import java.util.ArrayList;
 
 import rekkyn.musicgen.*;
+import rekkyn.musicgen.Chord.ResetChord;
 import rekkyn.musicgen.MidiFile.Track;
 import rekkyn.musicgen.Reference.Length;
 
@@ -70,6 +71,10 @@ public class ClosestChord extends Playable {
     public void play(MidiFile mf, Song song, Track track) {
         super.play(mf, song, track);
         for (Chord chord : song.progression) {
+            if (chord instanceof ResetChord) {
+                prevNotes.clear();
+                continue;
+            }
             getNotes(chord);
             int chordLength = chord.length;
             while (chordLength > 0) {
