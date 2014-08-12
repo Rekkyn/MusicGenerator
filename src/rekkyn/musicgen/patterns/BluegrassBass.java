@@ -18,23 +18,22 @@ public class BluegrassBass extends Playable {
                 continue;
             }
             Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? Note.C4 : prevNote).clamp(Note.C3, Note.C4.plus(5));
-            Note third = note.plus(chord.third);
-            Note fifth = note.plus(chord.fifth);
-            Note lowFifth = fifth.plus(-12);
+            chord.setRoot(note);
+            Note lowFifth = chord.fifth.plus(-12);
             
             int chordLength = chord.length;
             while (chordLength - Length.HALF >= 0) {
                 playNote(note, Length.EIGHTH);
-                playChord(new Note[] { third, fifth }, Length.EIGHTH);
+                playChord(new Note[] { chord.third, chord.fifth }, Length.EIGHTH);
                 playNote(lowFifth, Length.EIGHTH);
-                playChord(new Note[] { third, fifth }, Length.EIGHTH);
+                playChord(new Note[] { chord.third, chord.fifth }, Length.EIGHTH);
                 
                 chordLength -= Length.HALF;
             }
             
             if (chordLength > 0) {
                 playNote(note, Length.EIGHTH);
-                playChord(new Note[] { third, fifth }, Length.EIGHTH);
+                playChord(new Note[] { chord.third, chord.fifth }, Length.EIGHTH);
             }
             
             prevNote = note;

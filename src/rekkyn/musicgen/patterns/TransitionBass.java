@@ -1,5 +1,8 @@
 package rekkyn.musicgen.patterns;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rekkyn.musicgen.*;
 import rekkyn.musicgen.Chord.ResetChord;
 import rekkyn.musicgen.MidiFile.Track;
@@ -8,6 +11,8 @@ import rekkyn.musicgen.Reference.Length;
 public class TransitionBass extends Playable {
     
     Note prevNote = Note.C0;
+    
+    private static final Note defaultNote = Note.C4;
     
     @Override
     public void play(MidiFile mf, Song song, Track track) {
@@ -18,7 +23,7 @@ public class TransitionBass extends Playable {
                 prevNote = Note.C0;
                 continue;
             }
-            Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? Note.C4 : prevNote).clamp(Note.C3, Note.C5);
+            Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? defaultNote : prevNote).clamp(Note.C3, Note.C5);
             
             int chordLength = chord.length;
             while (chordLength > Length.EIGHTH) {
@@ -33,16 +38,52 @@ public class TransitionBass extends Playable {
                     reset = true;
                 }
                 
-                Note nextNote = new Note(nextChord.root).closestTo(reset ? Note.C3 : note).clamp(Note.C2, Note.C4);
+                Note nextNote = new Note(nextChord.root).closestTo(reset ? defaultNote : note).clamp(Note.C2, Note.C4);
                 int interval = song.getIntervalBetweenNotes(note, nextNote);
                 if (Math.abs(interval) <= 1)
                     playNote(note, Length.EIGHTH);
                 else if (interval == 2)
                     playNote(song.getNextNoteFromScale(note, 1), Length.EIGHTH);
-                else if (interval == -2) playNote(song.getNextNoteFromScale(note, -1), Length.EIGHTH);
-                else
-                    playNote(note, Length.EIGHTH);
-                System.out.println(interval);
+                else if (interval == -2)
+                    playNote(song.getNextNoteFromScale(note, -1), Length.EIGHTH);
+                else {
+                    int numNotes = 0;
+                    List<Note> notes = new ArrayList<Note>();
+                    if (interval > 0) {
+                        for (int Int = 1; Int < interval; Int++) {
+                            if (nextChord.containsNote(song.getNextNoteFromScale(note, Int))) {
+                                numNotes++;
+                                notes.add(song.getNextNoteFromScale(note, Int));
+                            }
+                        }
+                    } else {
+                        for (int Int = -1; Int > interval; Int--) {
+                            if (nextChord.containsNote(song.getNextNoteFromScale(note, Int))) {
+                                numNotes++;
+                                notes.add(song.getNextNoteFromScale(note, Int));
+                            }
+                        }
+                    }
+                    
+                    System.out.println(numNotes);
+                    if (numNotes == 1) {
+                        for (Note transitionNote : notes) {
+                            if (nextChord.containsNote(transitionNote)) playNote(transitionNote, Length.EIGHTH);
+                        }
+                    } else {
+                        Note[] chordNotes = new Note[4];
+                        for (Note transitionNote : notes) {
+                            if (nextChord.containsNote(transitionNote)) chordNotes[nextChord.indexOfNote(transitionNote)] = transitionNote;
+                        }
+                        if (chordNotes[3] != null)
+                            playNote(chordNotes[3], Length.EIGHTH);
+                        else if (chordNotes[1] != null)
+                            playNote(chordNotes[1], Length.EIGHTH);
+                        else if (chordNotes[2] != null)
+                            playNote(chordNotes[2], Length.EIGHTH);
+                        else if (chordNotes[0] != null) playNote(chordNotes[0], Length.EIGHTH);
+                    }
+                }
                 
             } else {
                 playNote(note, Length.EIGHTH);

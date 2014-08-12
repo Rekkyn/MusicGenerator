@@ -17,9 +17,10 @@ public class Song {
                 int rootNum = (key.num + scale[((Positions) progression[i]).position]) % 12;
                 Chord chord = new Chord(Root.getRootFromNum(rootNum));
                 Note root = new Note(rootNum);
-                chord.third = getNextNoteFromScale(root, 2).num - rootNum;
-                chord.fifth = getNextNoteFromScale(root, 4).num - rootNum;
-                chord.seventh = getNextNoteFromScale(root, 6).num - rootNum;
+                int third = getNextNoteFromScale(root, 2).num - rootNum;
+                int fifth = getNextNoteFromScale(root, 4).num - rootNum;
+                int seventh = getNextNoteFromScale(root, 6).num - rootNum;
+                chord.setIntervals(third, fifth, seventh);
                 progression[i] = chord;
             }
         }

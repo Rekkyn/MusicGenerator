@@ -20,11 +20,12 @@ public class ClosestChord extends Playable {
     
     public void getNotes(Chord chord) {
         Note rootNote = new Note(chord.root.num).closestTo(Note.C5);
+        chord.setRoot(rootNote);
         
         ArrayList<Note> newnotes = new ArrayList<Note>();
         newnotes.add(rootNote);
-        newnotes.add(rootNote.plus(chord.third));
-        newnotes.add(rootNote.plus(chord.fifth));
+        newnotes.add(chord.third);
+        newnotes.add(chord.fifth);
         
         Note closest = newnotes.get(0);
         if (!prevNotes.isEmpty()) {

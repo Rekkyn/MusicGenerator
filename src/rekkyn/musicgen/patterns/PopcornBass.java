@@ -18,21 +18,20 @@ public class PopcornBass extends Playable {
                 continue;
             }
             Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? Note.C4 : prevNote).clamp(Note.C3, Note.C4);
-            Note third = note.plus(chord.third);
-            Note fifth = note.plus(chord.fifth);
+            chord.setRoot(note);
             Note octave = note.plus(12);
             
             int chordLength = chord.length;
             while (chordLength - Length.QUARTER > 0) {
                 playNote(note, Length.EIGHTH);
                 playNote(octave, Length.SIXTEENTH);
-                playNote(fifth, Length.SIXTEENTH);
+                playNote(chord.fifth, Length.SIXTEENTH);
                 
                 chordLength -= Length.QUARTER;
             }
             playNote(note, Length.SIXTEENTH);
-            playNote(third, Length.SIXTEENTH);
-            playNote(fifth, Length.SIXTEENTH);
+            playNote(chord.third, Length.SIXTEENTH);
+            playNote(chord.fifth, Length.SIXTEENTH);
             playNote(octave, Length.SIXTEENTH);
             
             prevNote = note;
