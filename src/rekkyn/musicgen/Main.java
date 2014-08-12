@@ -20,7 +20,7 @@ public class Main {
                         Positions.III, Positions.IV });
         
         song.add(new ClosestChord(Length.WHOLE), mf, Track.CHORDS);
-        song.add(new TransitionBass(), mf, Track.BASS);
+        song.add(new TransitionBass(true), mf, Track.BASS);
         
         mf.writeToFile("test.mid");
     }

@@ -11,8 +11,12 @@ import rekkyn.musicgen.Reference.Length;
 public class TransitionBass extends Playable {
     
     Note prevNote = Note.C0;
-    
     private static final Note defaultNote = Note.C4;
+    boolean transitionOnSecond;
+    
+    public TransitionBass(boolean transitionOnSecond) {
+        this.transitionOnSecond = transitionOnSecond;
+    }
     
     @Override
     public void play(MidiFile mf, Song song, Track track) {
@@ -41,7 +45,10 @@ public class TransitionBass extends Playable {
                 Note nextNote = new Note(nextChord.root).closestTo(reset ? defaultNote : note).clamp(Note.C2, Note.C4);
                 int interval = song.getIntervalBetweenNotes(note, nextNote);
                 if (Math.abs(interval) <= 1)
-                    playNote(note, Length.EIGHTH);
+                    if (transitionOnSecond && Note.distanceBetweenNotes(note, nextNote) > 1) {
+                        playNote(note.plus(interval), Length.EIGHTH);
+                    } else
+                        playNote(note, Length.EIGHTH);
                 else if (interval == 2)
                     playNote(song.getNextNoteFromScale(note, 1), Length.EIGHTH);
                 else if (interval == -2)
@@ -65,7 +72,6 @@ public class TransitionBass extends Playable {
                         }
                     }
                     
-                    System.out.println(numNotes);
                     if (numNotes == 1) {
                         for (Note transitionNote : notes) {
                             if (nextChord.containsNote(transitionNote)) playNote(transitionNote, Length.EIGHTH);
