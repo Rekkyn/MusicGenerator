@@ -47,7 +47,7 @@ public class TransitionBass extends Playable {
                 
                 Note nextNote = new Note(nextChord.root).closestTo(reset ? defaultNote : note).clamp(minNote, maxNote);
                 int interval = song.getIntervalBetweenNotes(note, nextNote);
-                if (Math.abs(interval) <= 1)
+                if (Math.abs(interval) <= 1 || interval == Integer.MAX_VALUE)
                     if (transitionOnSecond && Note.distanceBetweenNotes(note, nextNote) > 1) {
                         playNote(note.plus(interval), Length.EIGHTH);
                     } else

@@ -93,12 +93,14 @@ public class Song {
             while (true) {
                 if (getNextNoteFromScale(a, pos).equals(b)) return pos;
                 pos++;
+                if (getNextNoteFromScale(a, pos).num > b.num) return Integer.MAX_VALUE;
             }
         } else {
             int pos = -1;
             while (true) {
                 if (getNextNoteFromScale(a, pos).equals(b)) return pos;
                 pos--;
+                if (getNextNoteFromScale(a, pos).num < b.num) return Integer.MAX_VALUE;
             }
         }
     }

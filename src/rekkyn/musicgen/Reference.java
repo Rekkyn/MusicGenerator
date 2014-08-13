@@ -13,7 +13,7 @@ public class Reference {
         public static Root getRootFromNum(int num) {
             while (num >= 12)
                 num -= 12;
-            switch(num) {
+            switch (num) {
                 case 0:
                     return C;
                 case 1:

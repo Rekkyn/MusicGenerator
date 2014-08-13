@@ -15,10 +15,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         MidiFile mf = new MidiFile();
         
-        Song song = new Song().setKey(Root.C, Scale.MINOR).setProgression(
-                new Chord[] { Chord.pos(Position.I), Chord.pos(Position.VI), Chord.pos(Position.III), Chord.pos(Position.VII),
-                        new ResetChord(), Chord.pos(Position.I), Chord.pos(Position.VI), Chord.pos(Position.III),
-                        Chord.pos(Position.V).majThird(true) });
+        Song song = new Song().setKey(Root.Fs, Scale.MINOR).setProgression(
+                new Chord[] { Chord.pos(Position.I), Chord.pos(Position.VI), Chord.pos(Position.IV),
+                        Chord.pos(Position.VII).length(Length.HALF), new Chord(Root.F).dim().length(Length.HALF), new ResetChord(),
+                        Chord.pos(Position.I),
+                        Chord.pos(Position.VI), Chord.pos(Position.IV), Chord.pos(Position.VII).length(Length.HALF),
+                        new Chord(Root.F).dim().length(Length.HALF), Chord.pos(Position.I) });
         
         song.add(new ClosestChord(Length.WHOLE), mf, Track.CHORDS);
         song.add(new TransitionBass(true), mf, Track.BASS);
