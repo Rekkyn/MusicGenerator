@@ -15,9 +15,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         MidiFile mf = new MidiFile();
         
-        Song song = new Song().setKey(Root.C, Scale.MAJOR).setProgression(
-                new Object[] { Positions.I, Positions.V, Positions.VI, Positions.IV, new ResetChord(), Positions.I, Positions.V,
-                        Positions.III, Positions.IV });
+        Song song = new Song().setKey(Root.C, Scale.MINOR).setProgression(
+                new Object[] { Positions.I, Positions.VI, Positions.III, Positions.VII, new ResetChord(), Positions.I, Positions.VI,
+                        Positions.III, new Chord(Root.G) });
         
         song.add(new ClosestChord(Length.WHOLE), mf, Track.CHORDS);
         song.add(new TransitionBass(true), mf, Track.BASS);

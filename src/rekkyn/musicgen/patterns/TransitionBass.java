@@ -12,6 +12,9 @@ public class TransitionBass extends Playable {
     
     Note prevNote = Note.C0;
     private static final Note defaultNote = Note.C4;
+    private static final Note minNote = Note.C3;
+    private static final Note maxNote = Note.C5;
+    
     boolean transitionOnSecond;
     
     public TransitionBass(boolean transitionOnSecond) {
@@ -27,7 +30,7 @@ public class TransitionBass extends Playable {
                 prevNote = Note.C0;
                 continue;
             }
-            Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? defaultNote : prevNote).clamp(Note.C3, Note.C5);
+            Note note = new Note(chord.root.num).closestTo(prevNote == Note.C0 ? defaultNote : prevNote).clamp(minNote, maxNote);
             
             int chordLength = chord.length;
             while (chordLength > Length.EIGHTH) {
@@ -42,7 +45,7 @@ public class TransitionBass extends Playable {
                     reset = true;
                 }
                 
-                Note nextNote = new Note(nextChord.root).closestTo(reset ? defaultNote : note).clamp(Note.C2, Note.C4);
+                Note nextNote = new Note(nextChord.root).closestTo(reset ? defaultNote : note).clamp(minNote, maxNote);
                 int interval = song.getIntervalBetweenNotes(note, nextNote);
                 if (Math.abs(interval) <= 1)
                     if (transitionOnSecond && Note.distanceBetweenNotes(note, nextNote) > 1) {
