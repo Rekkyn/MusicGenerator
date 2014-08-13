@@ -2,30 +2,41 @@ package rekkyn.musicgen;
 
 import java.util.*;
 
+import rekkyn.musicgen.Chord.PositionChord;
 import rekkyn.musicgen.MidiFile.Track;
 import rekkyn.musicgen.Reference.Root;
-import rekkyn.musicgen.Scale.Positions;
 
 public class Song {
     public List<Chord> progression = new ArrayList<Chord>();
     public Root key;
     public int[] scale;
     
-    public Song setProgression(Object[] progression) {
+    public Song setProgression(Chord[] progression) {
         for (int i = 0; i < progression.length; i++) {
-            if (progression[i] instanceof Positions) {
-                int rootNum = (key.num + scale[((Positions) progression[i]).position]) % 12;
-                Chord chord = new Chord(Root.getRootFromNum(rootNum));
+            Chord chord = progression[i];
+            if (chord instanceof PositionChord) {
+                int rootNum = (key.num + scale[((PositionChord) chord).pos.position]) % 12;
+                chord.root = Root.getRootFromNum(rootNum);
                 Note root = new Note(rootNum);
-                int third = getNextNoteFromScale(root, 2).num - rootNum;
+                chord.rootNote = root;
+                int third = 0;
+                if (((PositionChord) chord).majThird != null) {
+                    System.out.println("yo");
+                    if (((PositionChord) chord).majThird)
+                        third = 4;
+                    else
+                        third = 3;
+                } else
+                    third = getNextNoteFromScale(root, 2).num - rootNum;
+                
                 int fifth = getNextNoteFromScale(root, 4).num - rootNum;
                 int seventh = getNextNoteFromScale(root, 6).num - rootNum;
+                
                 chord.setIntervals(third, fifth, seventh);
                 progression[i] = chord;
             }
         }
-        Chord[] chordArray = Arrays.copyOf(progression, progression.length, Chord[].class);
-        this.progression = Arrays.asList(chordArray);
+        this.progression = Arrays.asList(progression);
         return this;
     }
     

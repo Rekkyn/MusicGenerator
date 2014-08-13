@@ -2,6 +2,7 @@ package rekkyn.musicgen;
 
 import rekkyn.musicgen.Reference.Length;
 import rekkyn.musicgen.Reference.Root;
+import rekkyn.musicgen.Scale.Position;
 
 public class Chord {
     
@@ -24,6 +25,10 @@ public class Chord {
     }
     
     public Chord() {}
+    
+    public static PositionChord pos(Position pos) {
+        return new PositionChord(pos);
+    }
     
     public Chord minor() {
         thirdInt = 3;
@@ -91,5 +96,21 @@ public class Chord {
     
     public static class ResetChord extends Chord {
         public ResetChord() {}
+    }
+    
+    public static class PositionChord extends Chord {
+        
+        public Position pos;
+        
+        public Boolean majThird;
+        
+        public PositionChord(Position pos) {
+            this.pos = pos;
+        }
+        
+        public Chord majThird(boolean majThird) {
+            this.majThird = majThird;
+            return this;
+        }
     }
 }
