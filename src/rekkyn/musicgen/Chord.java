@@ -57,7 +57,11 @@ public class Chord {
     
     public Chord setRoot(Note root) {
         if (root.num % 12 != rootNote.num % 12) {
-            System.err.println("Wrong chord root");
+            try {
+                throw new Exception("Wrong chord root");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return this;
         }
         rootNote = root;
@@ -75,6 +79,7 @@ public class Chord {
         thirdInt = third;
         fifthInt = fifth;
         seventhInt = seventh;
+        rebuild();
     }
     
     public boolean containsNote(Note note) {

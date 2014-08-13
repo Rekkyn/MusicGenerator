@@ -11,6 +11,7 @@ public class Note {
     public static final Note C4 = new Note(48);
     public static final Note C5 = new Note(60);
     public static final Note C6 = new Note(72);
+    public static final Note C7 = new Note(84);
     
     public int num;
     
@@ -65,6 +66,33 @@ public class Note {
         return new Note(num + i);
     }
     
+    public Note snapToChord(Chord chord, boolean seventh) {
+        int[] distAndIndex = new int[2];
+        distAndIndex[0] = Note.distanceBetweenNotes(this, chord.rootNote);
+        distAndIndex[1] = 0;
+        if (Note.distanceBetweenNotes(this, chord.third) < distAndIndex[0]) {
+            distAndIndex[0] = Note.distanceBetweenNotes(this, chord.third);
+            distAndIndex[1] = 1;
+        }
+        if (Note.distanceBetweenNotes(this, chord.fifth) < distAndIndex[0]) {
+            distAndIndex[0] = Note.distanceBetweenNotes(this, chord.fifth);
+            distAndIndex[1] = 2;
+        }
+        if (seventh && Note.distanceBetweenNotes(this, chord.seventh) < distAndIndex[0]) {
+            distAndIndex[0] = Note.distanceBetweenNotes(this, chord.seventh);
+            distAndIndex[1] = 3;
+        }
+        
+        if (distAndIndex[1] == 0)
+            return plus(Note.relDistanceBetweenNotes(this, chord.rootNote));
+        else if (distAndIndex[1] == 1)
+            return plus(Note.relDistanceBetweenNotes(this, chord.third));
+        else if (distAndIndex[1] == 2)
+            return plus(Note.relDistanceBetweenNotes(this, chord.fifth));
+        else if (distAndIndex[1] == 3) return plus(Note.relDistanceBetweenNotes(this, chord.seventh));
+        return null;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Note && num == ((Note) obj).num) return true;
@@ -73,7 +101,7 @@ public class Note {
     
     @Override
     public String toString() {
-        return "(" + num + ")";
+        return "(" + num + "): " + Root.getRootFromNum(num % 12);
     }
     
 }

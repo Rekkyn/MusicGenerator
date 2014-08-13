@@ -21,7 +21,6 @@ public class Song {
                 chord.rootNote = root;
                 int third = 0;
                 if (((PositionChord) chord).majThird != null) {
-                    System.out.println("yo");
                     if (((PositionChord) chord).majThird)
                         third = 4;
                     else
