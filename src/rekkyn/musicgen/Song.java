@@ -62,7 +62,7 @@ public class Song {
                     toAdd += scale[pos] - scale[pos - 1];
                 }
             }
-        } else {
+        } else if (interval < 0) {
             for (int i = 0; i > interval; i--) {
                 pos--;
                 if (pos < 0) {
@@ -82,7 +82,7 @@ public class Song {
         for (int i = 0; i < scale.length; i++) {
             if (note.num % 12 == (key.num + scale[i]) % 12) return i;
         }
-        System.err.println("Note " + note + "is not in key " + key);
+        System.err.println("Note " + note + " is not in key " + key);
         return 0;
     }
     

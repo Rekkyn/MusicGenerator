@@ -9,9 +9,10 @@ import rekkyn.musicgen.Reference.Length;
 
 public class Arpeggios extends Playable {
     
-    private Note prevNote = Note.C5;
+    private Note prevNote = Note.C6;
+    private int prevPattern = 0;
     
-    private Note minNote = Note.C4;
+    private Note minNote = Note.C5;
     private Note maxNote = Note.C7;
     
     @Override
@@ -33,7 +34,7 @@ public class Arpeggios extends Playable {
     
     private void playQuarter(Chord chord) {
         Random rand = new Random();
-        int randInt = rand.nextInt(2);
+        int randInt = rand.nextInt(4);
         Note start = prevNote.snapToChord(chord, false);
         int chordIndex = chord.indexOfNote(start);
         Note compareNote = null;
@@ -53,6 +54,28 @@ public class Arpeggios extends Playable {
         
         if (start.num > maxNote.num) randInt = 1;
         if (start.num < minNote.num) randInt = 0;
+        if (randInt == 2) {
+            for (int i = 0; i < 2; i++) {
+                chordIndex--;
+                if (chordIndex < 0) {
+                    chordIndex = 2;
+                    chord.setRoot(chord.rootNote.plus(-12));
+                }
+            }
+            randInt = 0;
+        }
+        if (randInt == 3) {
+            for (int i = 0; i < 2; i++) {
+                chordIndex++;
+                if (chordIndex > 2) {
+                    chordIndex = 0;
+                    chord.setRoot(chord.rootNote.plus(12));
+                }
+            }
+            randInt = 1;
+        }
+        
+        prevPattern = randInt;
         
         if (randInt == 0) {
             playNote(start, Length.SIXTEENTH);
@@ -102,10 +125,6 @@ public class Arpeggios extends Playable {
                         break;
                 }
             }
-            
-        } else if (randInt == 2) {
-            
-        } else if (randInt == 3) {
             
         }
     }

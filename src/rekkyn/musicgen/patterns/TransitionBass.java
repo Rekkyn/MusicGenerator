@@ -47,12 +47,14 @@ public class TransitionBass extends Playable {
                 
                 Note nextNote = new Note(nextChord.root).closestTo(reset ? defaultNote : note).clamp(minNote, maxNote);
                 int interval = song.getIntervalBetweenNotes(note, nextNote);
-                if (Math.abs(interval) <= 1 || interval == Integer.MAX_VALUE)
+                if (Math.abs(interval) <= 1) {
                     if (transitionOnSecond && Note.distanceBetweenNotes(note, nextNote) > 1) {
                         playNote(note.plus(interval), Length.EIGHTH);
                     } else
                         playNote(note, Length.EIGHTH);
-                else if (interval == 2)
+                } else if (interval == Integer.MAX_VALUE) {
+                    playNote(note, Length.EIGHTH);
+                } else if (interval == 2)
                     playNote(song.getNextNoteFromScale(note, 1), Length.EIGHTH);
                 else if (interval == -2)
                     playNote(song.getNextNoteFromScale(note, -1), Length.EIGHTH);
@@ -90,7 +92,11 @@ public class TransitionBass extends Playable {
                             playNote(chordNotes[1], Length.EIGHTH);
                         else if (chordNotes[2] != null)
                             playNote(chordNotes[2], Length.EIGHTH);
-                        else if (chordNotes[0] != null) playNote(chordNotes[0], Length.EIGHTH);
+                        else if (chordNotes[0] != null)
+                            playNote(chordNotes[0], Length.EIGHTH);
+                        else
+                            playNote(note, Length.EIGHTH);
+                        
                     }
                 }
                 
